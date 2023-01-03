@@ -11,3 +11,109 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+button{
+  width:10rem;
+  padding:0.6rem;
+  cursor: pointer;
+  border:none;
+  border-radius: 5px;
+  margin: 20px;
+}
+
+.search-here {
+  width: 56%;
+  padding: 10px;
+  font-size: 20px;
+  color: black;
+  box-sizing: border-box;
+  outline: none;
+  border-radius: none;
+  font-weight: bold;
+}
+
+select {
+  outline: none;
+  appearance: none;
+  box-sizing: border-box;
+  font-size: 20px;
+  background-color:white;
+  border: none;
+  padding: 10px;
+  margin: 3px;
+  width: 55%;
+  font-weight: bold;
+  cursor: inherit;
+  line-height: inherit;
+}
+
+
+.container-detail{
+  margin: 30px;
+  display: flex;
+  padding: 20px;
+  border: 1px;
+  border-radius: 9px;
+  box-shadow: 5px 5px 5px #888888;
+  background-color: #ffff;
+}
+
+.container-detail:hover{
+  background-color: yellow;
+}
+
+.container-detail h6 {
+  color: #0000;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.container-pokemon{
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.container-pokemon img{
+  background-color: white;
+}
+.search-input{
+  width: 200%;
+  justify-content: space-around;
+  align-items: center;
+  display: flex;
+}
+
+.search-input select {
+  border-radius: 5px;
+  height: 20px;
+  width: 16%;
+  background-color: antiquewhite;
+}
+
+
+
+.page-button{
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.page-button button{
+  background-color: white;
+  cursor: pointer;
+  border-radius: 1px ;
+  height: 40px;
+  font-weight: bold;
+}
+
+.page-button button:hover{
+  background-color: yellow;
+}
+
+table, th, td {
+  border: 1px;
+  background-color: white;
+  color: #000;
+}
