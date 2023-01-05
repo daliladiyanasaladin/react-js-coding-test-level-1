@@ -25,6 +25,12 @@ button{
   margin: 20px;
 }
 
+.gedisplaypokemon{
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
 .search-here {
   width: 56%;
   padding: 10px;
@@ -52,7 +58,7 @@ select {
 }
 
 
-.container-detail{
+#btn{
   margin: 30px;
   display: flex;
   padding: 20px;
@@ -62,11 +68,11 @@ select {
   background-color: #ffff;
 }
 
-.container-detail:hover{
+#btn:hover{
   background-color: yellow;
 }
 
-.container-detail h6 {
+#btn h6 {
   color: #0000;
   font-size: 30px;
   font-weight: bold;
