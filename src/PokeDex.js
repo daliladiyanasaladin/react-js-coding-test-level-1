@@ -1,27 +1,56 @@
 import "./App.css";
-import { useState, useEffect,createRef } from "react";
+import { useState, useEffect, createRef } from "react";
 import ReactLoading from "react-loading";
 import axios from "axios";
 import Modal from "react-modal";
-import {  NavLink } from "react-router-dom";
-import { Bar, BarChart, Tooltip, XAxis, YAxis } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, Tooltip } from 'recharts';
+import Page from "./Page";
 
-import ReactPDF from "@react-pdf/renderer";
 
 function PokeDex() {
   const ref = createRef();
   const [pokemons, setPokemons] = useState([]);
   const [pokemonDetail, setPokemonDetail] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [search, setSearch] = useState('');
-  const [currentPage, setCurrent] = useState(`https://pokeapi.co/api/v2/pokemon`);
-  const [prevPage, setPrev] = useState();
-   //in array bcs to display value in sequence
-  const [sorts, setSorts] = useState([]);
-  // eslint-disable-next-line 
-  const [PokeDetail, setPokeDetail]= useState([]);
-  const [nextPage, setNext] = useState();
-  
+  const [query, setQuery] = useState("");
+
+  const sortData = (e) => {
+    if (e.target.value === "asd") {
+      setPokemons([...pokemons].sort((a, b) => a.name > b.name ? 1 : -1))
+    }
+    else if (e.target.value === "dsd") {
+      setPokemons([...pokemons].sort((a, b) => b.name > a.name ? 1 : -1))
+    }
+  }
+
+  const showModel = async (url) => {
+    try {
+      setIsLoading(true);
+      const result = await axios.get(url);
+      const data = await result.data;
+      setPokemonDetail(data);
+      if (pokemonDetail) setIsLoading(false);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
+  const getPokedex = async () => {
+    try {
+      setIsLoading(true);
+      const result = await axios.get("https://pokeapi.co/api/v2/pokemon");
+      const data = await result.data.results;
+      setPokemons(data);
+      if (pokemons) setIsLoading(false);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    getPokedex();
+  }, [])
 
   const customStyles = {
     content: {
@@ -37,61 +66,11 @@ function PokeDex() {
     overlay: { backgroundColor: "grey" },
   };
 
-//fetch api
-//sort page
-
-  useEffect (() => {
-    axios.get(currentPage)
-    .then (response => {
-      if (sorts === 'name'){
-        const sorting = response.data.results.sort((a,b) =>
-        a.name.localeCompare(b.name));
-        setPokemons(sorting);
-        setIsLoading(false);
-      }
-      else
-      {
-        setIsLoading(false);
-        setPokemons(response.data.results);
-        setPrev(response.data.previous);
-        setNext(response.data.next);
-        
-      }
-    })
-    .catch(error => {
-      console.log(error);
-    })
-  }, [currentPage, sorts])
-  
-  const searched = (event)=> {
-    let {value} = event.target;
-    setSearch(value);
-  }
-  function redirectPrev(){
-    setCurrent(prevPage);
-  }
-
-  function redirectNext(){
-    setCurrent(nextPage);
-  }
- // passing value get from API
-  const pokedexDetail = (name) => {
-    axios.get(`https://pokeapi.co/api/v2/pokemon/${name}`)
-    .then(response => {
-      setIsLoading(false);
-      setPokemonDetail(response.data);
-    })
-    .catch(error => {
-      console.log(error);
-    })
- 
-  }
-  
   if (!isLoading && pokemons.length === 0) {
     return (
-      <div>    
+      <div>
         <header className="App-header">
-          <h1>Welcome to pokedex !</h1>         
+          <h1>Welcome to pokedex !</h1>
           <h2>Requirement:</h2>
           <ul>
             <li>
@@ -120,69 +99,45 @@ function PokeDex() {
           <>
             <div className="App">
               <header className="App-header">
-                <b><ReactLoading/></b>
+                <ReactLoading />
               </header>
             </div>
           </>
         ) : (
           <>
-           <div className="container">
-           <h1>Welcome to pokedex !</h1>  
-           <div className="search_filter">
-            <input
-            type="text"
-            value={search}
-            placeholder="Search"
-            onChange={searched}
-            className="search-here"
+            <div className="search-sort">
+              <input type="search" classname="search-here" placeholder="Search" onChange={e => setQuery(e.target.value)} />
+              <select onChange={sortData} name="sort">
+               
+                <option value="asd">Default</option>
+                <option value="dsd">By Name (A-Z)</option>
+              </select>
+            </div>
+            <h1>Welcome to pokedex !</h1>
+            <Page className="pagedisplaypokemon"
+              
+              query={query}
+              pageLimit={pokemons.length / 5}
+              
+              dataLimit={5}
+              data={pokemons}
+
+              showModel={showModel}
             />
-
-            <select className="option" value={pokemons.name} onChange={(e) => setSorts(e.target.value)}>
-              <option value="default">Default</option>
-              <option value="name"> By Name (A-Z)</option>
-            </select>
-           </div>
-
-           {pokemons.length > 0 && <div>
-            {
-              pokemons.filter(item => item.name.toLowerCase().includes(search.toLocaleLowerCase()))
-              .map((item, index) => {
-                return <div key={index} className="container-pokemon" onClick={() => {
-                  setPokemonDetail(item); pokedexDetail(item.name)
-                }}>
-
-                  
-                  <NavLink to={`/pokedex/${item.name}`} style={{textDecoration:"none"}}>
-                    <img src={item.sprites} alt='' width="500" weight="300"/>
-                    <h6>{item.name}</h6>
-                  </NavLink>
-
-                </div>
-              })
-            }
-            </div>
-            }
-            <div className="page-button">
-            <button type="btn" onClick={redirectPrev}>Previous</button>
-              <button type="btn" onClick={redirectNext}>Next</button>
-
-            </div>
-           </div>
           </>
         )}
-        
       </header>
       {pokemonDetail && (
         <Modal
-          isOpen={pokemonDetail}
+          isOpen={pokemonDetail ? true : false}
           contentLabel={pokemonDetail?.name || ""}
+          ariaHideApp={false}
           onRequestClose={() => {
             setPokemonDetail(null);
           }}
           style={customStyles}
         >
-
-            <div ref={ref}>
+          <div ref={ref}>
             <img src={pokemonDetail.sprites.front_default} alt="" />
             <div className="flex" >
               <div>
@@ -219,56 +174,11 @@ function PokeDex() {
               </div>
             </div>
           </div>
-
-          <div>
-            Requirement:
-            <ul>
-              <li>show the sprites front_default as the pokemon image</li>
-              <li>
-                Show the stats details - only stat.name and base_stat is
-                required in tabular format
-              </li>
-              <li>Create a bar chart based on the stats above</li>
-              <li>Create a  buttton to download the information generated in this modal as pdf. (images and chart must be included)</li>
-            </ul>
-          </div>
-
-          {/* Display detail pokemon
-                    
-          <div className="container-pokemon">
-            
-            <div>
-              <img src={pokemonDetail.sprites.front_default} alt='' width="200" height="200"/>
-            </div>
-          <div>
-          <h6>{pokemonDetail.species.name}</h6>
-          </div>
-          </div>
-          {
-          pokemonDetail.stats.map((item) => {
-              return <div>
-                <table style={{width:'100%'}}>
-                  <tr>
-                    <td style={{width:'40%'}}>{item.base_stat}</td>
-                    <td style={{width:'40%'}}>{item.effort}</td>
-                    <td style={{width:'40%'}}>{item.stat.name}</td>
-                  </tr>
-                </table>
-              </div>
-          }
-            })
-          */}
-         <ReactPDF targetRef={ref} filename="pokemon.pdf" x="35">
-          {({ toPdf }) => (
-              <button className="pdf" onClick={toPdf}>Generate pdf</button>
-            )}
-          </ReactPDF>
-
-
-          
+         
         </Modal>
-      )}
-    </div>
+      )
+      }
+    </div >
   );
 }
 
