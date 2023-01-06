@@ -16,114 +16,163 @@ code {
     monospace;
 }
 
+.pageItem:hover{
+  color: yellow;
+}
+.home:hover{
+  background: white;
+  color: black;
+}
+
+
+
+
+
+.home{
+  position: relative;
+  gap:1rem; 
+  width:7rem;
+  padding:0.6rem;
+  gap: 0.7rem;
+  background:#282c34;
+  border: 2px solid white;
+  color: white;
+  box-shadow: 0 0 3px black;
+  cursor: pointer;
+  font-weight: bold;
+}
+
 button{
-  width:10rem;
+  width:7rem;
   padding:0.6rem;
   cursor: pointer;
   border:none;
   border-radius: 5px;
-  margin: 20px;
+  
 }
 
-.gedisplaypokemon{
+
+
+.search-here input{
+  width: 10rem;
+}
+
+.search-here input, 
+.search-here select{
+  width: 18rem;
+  padding: 0.4rem;
+  border-radius: 50px;
+  border: 4px solid white;
+}
+
+.search-here{
   display: flex;
-  justify-content: space-evenly;
-  align-items: center;
+  gap: 0.8rem;
+  text-align: center;
+  font-weight: 300;
+
 }
 
-.search-here {
-  width: 56%;
-  padding: 10px;
-  font-size: 20px;
-  color: black;
-  box-sizing: border-box;
-  outline: none;
-  border-radius: none;
+.previous.disabled,
+.next.disabled{
+  pointer-events: none;
+  box-shadow: none;
+  color: rgb(170, 170, 170);
+}
+
+.previous,
+.next{
+  background:#282c34;
+  border: 2px solid white;
+  color: white;
+  box-shadow: 0 0 3px black;
+  cursor: pointer;
+  font-weight: 200;
+}
+
+.pageItem.active {
+  border: 1px solid white;
+  color:rgb(179, 177, 177);
+  pointer-events: none;
+}
+
+.pageItem{
+  color: white;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  cursor: pointer;
+  border:  50% solid white;
+  background: #282c346d;
+  position: relative;
   font-weight: bold;
+  
 }
 
-select {
-  outline: none;
-  appearance: none;
-  box-sizing: border-box;
-  font-size: 20px;
-  background-color:white;
-  border: none;
-  padding: 10px;
-  margin: 3px;
-  width: 55%;
-  font-weight: bold;
-  cursor: inherit;
-  line-height: inherit;
-}
-
-
-#btn{
-  margin: 30px;
+.page{
+  gap: 1rem;
   display: flex;
-  padding: 20px;
-  border: 1px;
-  border-radius: 9px;
-  box-shadow: 5px 5px 5px #888888;
-  background-color: #ffff;
-}
-
-#btn:hover{
-  background-color: yellow;
-}
-
-#btn h6 {
-  color: #0000;
-  font-size: 30px;
-  font-weight: bold;
-}
-
-.container-pokemon{
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-}
-
-.container-pokemon img{
-  background-color: white;
-}
-.search-input{
-  width: 200%;
-  justify-content: space-around;
-  align-items: center;
-  display: flex;
-}
-
-.search-input select {
-  border-radius: 5px;
-  height: 20px;
-  width: 16%;
-  background-color: antiquewhite;
-}
-
-
-
-.page-button{
   justify-content: center;
-  display: flex;
   align-items: center;
-  cursor: pointer;
+
 }
 
-.page-button button{
-  background-color: white;
-  cursor: pointer;
-  border-radius: 1px ;
-  height: 40px;
-  font-weight: bold;
+.card{
+  align-items: center;
+  gap: 0.7rem;
+  flex-direction: column;
+  display: flex;
 }
 
-.page-button button:hover{
-  background-color: yellow;
+.flex{
+  flex-wrap:wrap;
+  gap:1rem;
+  display: flex;
 }
 
-table, th, td {
-  border: 1px;
-  background-color: white;
-  color: #000;
+th{
+  padding:0.7rem;
+  border-bottom: 1px solid #4ab5b0;
+  text-align: left;
+  
 }
+td{
+  padding:0.7rem;
+  border-bottom: 1px solid #425453;
+  text-align: left;
+}
+
+
+table{
+  border-collapse: collapse;
+}
+
+.pokemon{
+  left: 0px;
+  right: 0px;
+  cursor:pointer;
+  text-transform: capitalize;
+  border:5px solid rgb(237, 237, 231);
+  width:20rem;
+  text-align:center;
+  padding:0.3rem;
+  border-radius: 50px;
+}
+
+.pokemon:hover{
+  color:yellow;
+}
+
+header{
+  color: aquamarine;
+  animation: animate 4s linear infinite;
+  text-shadow: 0 0 50px #0072ff, 0 0 100px #4ab5b0, 0 0 150px #0072ff, 0 0 200px #0072ff;
+  
+}
+
+header :hover{
+  text-shadow: 0 0 50px #e600ff4c, 0 0 100px #e2e7e7, 0 0 150px #ff00f7, 0 0 200px #ff00b3;
+  
+}
+
+
