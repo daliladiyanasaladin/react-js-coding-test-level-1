@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import "./index.css";
+import "./index.css"
 
 const Pagination = ({ data, query, pageLimit, dataLimit, showModel }) => {
     const [pages] = useState(Math.round(data.length / dataLimit));
@@ -30,8 +30,11 @@ const Pagination = ({ data, query, pageLimit, dataLimit, showModel }) => {
     };
 
     return (
-        <div className='container'>
-            {getPaginatedData().filter(poke => {
+        <div className='card'>
+            
+            {getPaginatedData()
+            // eslint-disable-next-line
+            .filter(poke => {
                 if (query === '') {
                     return poke;
                 } else if (poke.name.toLowerCase().includes(query.toLowerCase())) {
@@ -41,18 +44,18 @@ const Pagination = ({ data, query, pageLimit, dataLimit, showModel }) => {
                 <b className="pokemon" key={index} onClick={() => showModel(url)}>{name}</b>
             )}
             <div className="page">
-                <button id='btn'
+                <button 
                     onClick={goToPreviousPage}
-                    className={`prev ${currentPage === 1 ? 'disabled' : ''}`}
+                    className={`previous ${currentPage === 1 ? 'disabled' : ''}`}
                 >
-                    prev
+                    Previous
                 </button>
 
                 {getPaginationGroup().map((item, index) => (
-                    <button id='btn'
+                    <button 
                         key={index}
                         onClick={changePage}
-                        className={`paginationItem ${currentPage === item ? 'active' : null}`}
+                        className={`pageItem ${currentPage === item ? 'active' : null}`}
                     >
                         {item}
                     </button>
@@ -62,7 +65,7 @@ const Pagination = ({ data, query, pageLimit, dataLimit, showModel }) => {
                     onClick={goToNextPage}
                     className={`next ${currentPage === pages ? 'disabled' : ''}`}
                 >
-                    next
+                    Next
                 </button>
             </div>
         </div>
