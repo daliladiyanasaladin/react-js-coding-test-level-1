@@ -1,18 +1,32 @@
 import "./App.css";
+import "./index.css"
 import { useState, useEffect, createRef } from "react";
 import ReactLoading from "react-loading";
 import axios from "axios";
 import Modal from "react-modal";
 import { BarChart, Bar, XAxis, YAxis, Tooltip } from 'recharts';
 import Page from "./Page";
+import { useHistory } from "react-router-dom";
+import { useReactToPrint } from "react-to-print";
+
 
 
 function PokeDex() {
+  const history = useHistory();
   const ref = createRef();
   const [pokemons, setPokemons] = useState([]);
   const [pokemonDetail, setPokemonDetail] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [query, setQuery] = useState("");
+
+  const Pdf = useReactToPrint({
+    content: () => ref.current
+  });
+
+  const pokedexpage = () => {
+    history.push('/');
+   
+  }
 
   const sortData = (e) => {
     if (e.target.value === "asd") {
@@ -45,12 +59,15 @@ function PokeDex() {
       if (pokemons) setIsLoading(false);
     } catch (error) {
       console.log(error)
+      console.log('Cannot fetch')
     }
   }
 
   useEffect(() => {
     getPokedex();
-  }, [])
+  },
+  // eslint-disable-next-line
+   [])
 
   const customStyles = {
     content: {
@@ -60,7 +77,7 @@ function PokeDex() {
       bottom: "auto",
       marginRight: "-50%",
       transform: "translate(-50%, -50%)",
-      background: "black",
+      background: "#282c34",
       color: "white",
     },
     overlay: { backgroundColor: "grey" },
@@ -70,7 +87,7 @@ function PokeDex() {
     return (
       <div>
         <header className="App-header">
-          <h1>Welcome to pokedex !</h1>
+          <h1 id="header">Welcome to pokedex !</h1>
           <h2>Requirement:</h2>
           <ul>
             <li>
@@ -105,17 +122,16 @@ function PokeDex() {
           </>
         ) : (
           <>
-            <div className="search-sort">
-              <input type="search" classname="search-here" placeholder="Search" onChange={e => setQuery(e.target.value)} />
-              <select onChange={sortData} name="sort">
+            <div className="search-here">
+              <input type="search" className="search-here" placeholder="Search" onChange={e => setQuery(e.target.value)} />
+              <select onChange={sortData} className="search-here">
                
-                <option value="asd">Default</option>
-                <option value="dsd">By Name (A-Z)</option>
+                <option value="dsd">Default</option>
+                <option value="asd">By Name (A-Z)</option>
               </select>
             </div>
-            <h1>Welcome to pokedex !</h1>
-            <Page className="pagedisplaypokemon"
-              
+            <h1 className="relative overflow-hidden bg-no-repeat bg-cover max-w-xs">Welcome to pokedex !</h1>
+            <Page              
               query={query}
               pageLimit={pokemons.length / 5}
               
@@ -163,7 +179,7 @@ function PokeDex() {
                 </table>
               </div>
               <div>
-                <BarChart width={300} height={200}
+                <BarChart width={350} height={350}
                   data={pokemonDetail.stats}
                 >
                   <XAxis dataKey={"stat.name"} />
@@ -171,10 +187,19 @@ function PokeDex() {
                   <Tooltip />
                   <Bar dataKey={"base_stat"} fill="#82ca9d" />
                 </BarChart>
+                <button className="home" onClick={pokedexpage} >
+               Home
+            </button>
+            <button className="home" ref={ref} onClick={Pdf}>
+              PDF File
+            </button>
+                
               </div>
+              
+              
             </div>
+            
           </div>
-         
         </Modal>
       )
       }
